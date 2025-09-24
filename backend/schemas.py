@@ -1,13 +1,11 @@
 from flask_marshmallow import Marshmallow  # type: ignore
-from backend.models import User, Movie, Review, Watchlist  # fixed import for package
+from backend.models import User, Movie, Review, Watchlist  
 
-# Initialize Marshmallow (will be hooked to app inside app.py)
+
 ma = Marshmallow()
 
 
-# ----------------------
-# Schema Class Definitions
-# ----------------------
+
 
 class UserSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
@@ -37,11 +35,7 @@ class WatchlistSchema(ma.SQLAlchemyAutoSchema):
         load_instance = True
 
 
-# ----------------------
-# Schema Instances
-# ----------------------
 
-# Single object schemas
 user_schema = UserSchema()
 movie_schema = MovieSchema()
 review_schema = ReviewSchema()
