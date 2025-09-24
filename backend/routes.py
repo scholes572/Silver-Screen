@@ -1,15 +1,15 @@
 from flask import Blueprint, request, jsonify
-from backend.models import db, User, Movie, Review, Watchlist  # fixed import for package
+from backend.models import db, User, Movie, Review, Watchlist 
 from backend.schemas import (
     user_schema, users_schema,
     movie_schema, movies_schema,
     review_schema, reviews_schema,
     watchlist_schema, watchlists_schema
-)  # ✅ fixed import
+)  
 
 api_bp = Blueprint("api", __name__)
 
-# Root route for friendly landing page
+
 @api_bp.route("/", methods=["GET"])
 def root():
     return jsonify({"message": "Welcome to the Silver Screen API!"}), 200

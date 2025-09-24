@@ -4,3 +4,7 @@ flask-migrate
 flask-cors
 flask-marshmallow
 marshmallow-sqlalchemy
+_pycache_/
+instance/
+migrations/
+venv/
