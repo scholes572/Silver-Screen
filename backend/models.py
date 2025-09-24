@@ -37,13 +37,13 @@ class Review(db.Model):
     __tablename__ = "reviews"
 
     id = db.Column(db.Integer, primary_key=True)
-    rating = db.Column(db.Integer, nullable=False)  # 1–5
+    rating = db.Column(db.Integer, nullable=False)  
     text = db.Column(db.Text, nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     movie_id = db.Column(db.Integer, db.ForeignKey("movies.id"), nullable=False)
 
-    # Relationship
+    
     user = db.relationship("User", back_populates="reviews")
     movie = db.relationship("Movie", back_populates="reviews")
 
