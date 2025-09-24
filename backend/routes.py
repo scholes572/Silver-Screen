@@ -14,13 +14,13 @@ api_bp = Blueprint("api", __name__)
 def root():
     return jsonify({"message": "Welcome to the Silver Screen API!"}), 200
 
-# Health check
+
 @api_bp.route("/ping", methods=["GET"])
 def ping():
     return jsonify({"message": "pong"}), 200
 
 
-# ---------------- MOVIES ----------------
+
 @api_bp.route("/movies", methods=["GET"])
 def get_movies():
     movies = Movie.query.all()
@@ -31,7 +31,7 @@ def add_movie():
     data = request.get_json()
     title = data.get("title")
     genre = data.get("genre")
-    year = data.get("year")  # matches your model field
+    year = data.get("year")  
 
     if not title or not genre or not year:
         return jsonify({"error": "All fields are required"}), 400
@@ -51,7 +51,7 @@ def delete_movie(id):
     return jsonify({"message": "Movie deleted"}), 200
 
 
-# ---------------- REVIEWS ----------------
+
 @api_bp.route("/reviews", methods=["GET"])
 def get_reviews():
     reviews = Review.query.all()
