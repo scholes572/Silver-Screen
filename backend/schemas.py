@@ -41,7 +41,6 @@ movie_schema = MovieSchema()
 review_schema = ReviewSchema()
 watchlist_schema = WatchlistSchema()
 
-# Multiple object schemas
 users_schema = UserSchema(many=True)
 movies_schema = MovieSchema(many=True)
 reviews_schema = ReviewSchema(many=True)
