@@ -63,7 +63,7 @@ def add_review():
     user_id = data.get("user_id")
     movie_id = data.get("movie_id")
     rating = data.get("rating")
-    text = data.get("text")  # matches your model field
+    text = data.get("text")  
 
     if not rating or not (1 <= int(rating) <= 5):
         return jsonify({"error": "Rating must be between 1 and 5"}), 400
@@ -96,7 +96,7 @@ def delete_review(id):
     return jsonify({"message": "Review deleted"}), 200
 
 
-# ---------------- WATCHLIST ----------------
+
 @api_bp.route("/watchlist", methods=["GET"])
 def get_watchlist():
     watchlist = Watchlist.query.all()
