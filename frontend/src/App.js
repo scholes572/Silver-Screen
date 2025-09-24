@@ -5,22 +5,83 @@ import MovieList from "./components/MovieList";
 import Watchlist from "./components/Watchlist";
 import LoginPage from "./components/LoginPage";
 
+// Updated background: vibrant blue-purple gradient
+const pageBg = {
+  minHeight: "100vh",
+  background: "linear-gradient(120deg, #6a82fb 0%, #fc5c7d 100%)",
+  padding: "0",
+  margin: "0"
+};
+
 const homeStyles = {
-  margin: "40px auto",
-  maxWidth: "400px",
-  padding: "32px",
-  background: "#fff",
-  borderRadius: "16px",
-  boxShadow: "0 4px 24px rgba(0,0,0,0.12)",
+  margin: "48px auto",
+  maxWidth: "500px",
+  padding: "48px 32px",
+  background: "rgba(255,255,255,0.96)",
+  borderRadius: "24px",
+  boxShadow: "0 8px 32px rgba(106,130,251,0.12), 0 2px 8px rgba(252,92,125,0.08)",
   textAlign: "center",
-  color: "#ad2b2bff",
+  color: "#6a82fb",
   fontWeight: "bold",
-  fontSize: "1.5rem"
+  fontSize: "2.1rem",
+  letterSpacing: "1px",
+  position: "relative"
+};
+
+const accentCircle = {
+  position: "absolute",
+  top: "-36px",
+  left: "-36px",
+  width: "72px",
+  height: "72px",
+  background: "radial-gradient(circle, #fc5c7d 70%, #fff 100%)",
+  borderRadius: "50%",
+  opacity: 0.18,
+  zIndex: 0
+};
+
+const accentCircle2 = {
+  position: "absolute",
+  bottom: "-28px",
+  right: "-28px",
+  width: "56px",
+  height: "56px",
+  background: "radial-gradient(circle, #6a82fb 70%, #fff 100%)",
+  borderRadius: "50%",
+  opacity: 0.13,
+  zIndex: 0
+};
+
+const taglineStyles = {
+  color: "#22223b",
+  fontWeight: "500",
+  fontSize: "1.2rem",
+  marginTop: "18px",
+  marginBottom: "10px",
+  letterSpacing: "0.5px"
+};
+
+const emojiStyles = {
+  fontSize: "2.5rem",
+  marginTop: "18px"
 };
 
 const Home = () => (
-  <div style={homeStyles}>
-    Welcome to SilverScreen 🎬
+  <div style={pageBg}>
+    <div style={{ position: "relative" }}>
+      <div style={accentCircle}></div>
+      <div style={accentCircle2}></div>
+      <div style={homeStyles}>
+        <div style={emojiStyles}>🎬🍿</div>
+        Welcome to <span style={{ color: "#fc5c7d" }}>SilverScreen</span>
+        <div style={taglineStyles}>
+          Discover, track, and enjoy your favorite movies in style!
+        </div>
+        <div style={{ marginTop: "28px", fontSize: "1.1rem", color: "#6a82fb", fontWeight: "500" }}>
+          Start exploring now!
+        </div>
+      </div>
+    </div>
   </div>
 );
 
@@ -33,7 +94,7 @@ function App() {
 
   return (
     <Router>
-      <div>
+      <div style={pageBg}>
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
