@@ -1,6 +1,6 @@
 import React from "react";
 
-function ReviewList({ reviews }) {
+function ReviewList({ reviews = [] }) {
   return (
     <div style={styles.container}>
       <h3>Reviews</h3>
@@ -20,7 +20,12 @@ function ReviewList({ reviews }) {
 
 const styles = {
   container: { marginTop: "20px" },
-  review: { background: "#f9f9f9", padding: "10px", marginBottom: "10px", borderRadius: "5px" },
+  review: {
+    background: "#f9f9f9",
+    padding: "10px",
+    marginBottom: "10px",
+    borderRadius: "5px",
+  },
 };
 
 export default ReviewList;
