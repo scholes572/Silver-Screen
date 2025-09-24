@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import MovieList from "./components/MovieList";
 import Watchlist from "./components/Watchlist";
+import LoginPage from "./components/LoginPage";
+import ReviewList from "./components/ReviewList";
 
 
 // Updated background: vibrant blue-purple gradient
