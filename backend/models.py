@@ -26,17 +26,13 @@ class Movie(db.Model):
     genre = db.Column(db.String(50))
     year = db.Column(db.Integer)
 
-    # Relationships
+    
     reviews = db.relationship("Review", back_populates="movie", cascade="all, delete-orphan")
     watchlisted_by = db.relationship("Watchlist", back_populates="movie", cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"<Movie {self.title}>"
 
-
-# ----------------------
-# Review Model
-# ----------------------
 class Review(db.Model):
     __tablename__ = "reviews"
 
