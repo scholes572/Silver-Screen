@@ -5,7 +5,7 @@ function MovieList() {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/movies")  // Flask endpoint
+    fetch("http://localhost:5001/api/movies") 
       .then(res => res.json())
       .then(data => setMovies(data))
       .catch(err => console.error("Error fetching movies:", err));

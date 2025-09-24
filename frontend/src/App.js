@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import MovieList from "./components/MovieList";
 import Watchlist from "./components/Watchlist";
-import LoginPage from "./components/LoginPage";
+
 
 // Updated background: vibrant blue-purple gradient
 const pageBg = {
@@ -100,6 +100,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/movies" element={<MovieList />} />
           <Route path="/watchlist" element={<Watchlist />} />
+          <Route path="/reviews" element={<ReviewList />} />
         </Routes>
       </div>
     </Router>

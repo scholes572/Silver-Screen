@@ -9,6 +9,9 @@ function Navbar() {
         <Link to="/" style={styles.link}>Home</Link>
         <Link to="/movies" style={styles.link}>Movies</Link>
         <Link to="/watchlist" style={styles.link}>Watchlist</Link>
+        <Link to="/reviews" style={styles.link}>Reviews</Link>
+
+        
       </div>
     </nav>
   );
