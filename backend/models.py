@@ -10,7 +10,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
 
-    # Relationships
+    
     reviews = db.relationship("Review", back_populates="user", cascade="all, delete-orphan")
     watchlist = db.relationship("Watchlist", back_populates="user", cascade="all, delete-orphan")
 
@@ -18,9 +18,6 @@ class User(db.Model):
         return f"<User {self.username}>"
 
 
-# ----------------------
-# Movie Model
-# ----------------------
 class Movie(db.Model):
     __tablename__ = "movies"
 
