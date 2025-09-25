@@ -88,11 +88,11 @@ const Home = () => (
 );
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    return localStorage.getItem("isLoggedIn") === "true";
-  });
+  // Always show login page on first load
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [watchlist, setWatchlist] = useState([]);
+  const [watchlistMessage, setWatchlistMessage] = useState("");
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -107,9 +107,18 @@ function App() {
     <Router>
       <div style={pageBg}>
         <Navbar />
+        {watchlistMessage && (
+          <div style={{position: 'fixed', top: 20, left: '50%', transform: 'translateX(-50%)', background: '#e8f5e9', color: '#43a047', padding: '12px 24px', borderRadius: '10px', fontWeight: 'bold', zIndex: 9999, boxShadow: '0 2px 8px #43a04722'}}>
+            {watchlistMessage}
+          </div>
+        )}
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/movies" element={<MovieList onAddToWatchlist={movie => setWatchlist(prev => [...prev, movie])} />} />
+          <Route path="/movies" element={<MovieList onAddToWatchlist={movie => {
+            setWatchlist(prev => [...prev, movie]);
+            setWatchlistMessage("Movie added to watchlist successfully!");
+            setTimeout(() => setWatchlistMessage(""), 2500);
+          }} />} />
           <Route path="/watchlist" element={<Watchlist watchlist={watchlist} />} />
           <Route path="/reviews" element={<ReviewList />} />
         </Routes>

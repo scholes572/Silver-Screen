@@ -17,10 +17,14 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
 
 
 class MovieSchema(ma.SQLAlchemyAutoSchema):
+    average_rating = ma.Method("get_average_rating")
     class Meta:
         model = Movie
         include_fk = True
         load_instance = True
+
+    def get_average_rating(self, obj):
+        return obj.average_rating
 
 
 class ReviewSchema(ma.SQLAlchemyAutoSchema):
@@ -28,6 +32,7 @@ class ReviewSchema(ma.SQLAlchemyAutoSchema):
         model = Review
         include_fk = True
         load_instance = True
+    created_at = ma.auto_field()
 
 
 class WatchlistSchema(ma.SQLAlchemyAutoSchema):

@@ -3,12 +3,15 @@ import MovieCard from "./MovieCard";
 
 function MovieList({ onAddToWatchlist }) {
   const [movies, setMovies] = useState([]);
+  const [addMessage, setAddMessage] = useState("");
   const [showAddForm, setShowAddForm] = useState(false);
   const [formData, setFormData] = useState({ title: "", genre: "", year: "" });
+  const [search, setSearch] = useState("");
+  const [genreFilter, setGenreFilter] = useState("");
 
   // Fetch movies
   useEffect(() => {
-    fetch("http://localhost:5000/api/movies")
+  fetch("http://localhost:5000/api/movies")
       .then((res) => res.json())
       .then((data) => setMovies(data))
       .catch((err) => console.error("Error fetching movies:", err));
@@ -16,7 +19,7 @@ function MovieList({ onAddToWatchlist }) {
 
   // Add Movie
   const handleAddMovie = () => {
-    fetch("http://localhost:5000/api/movies", {
+  fetch("http://localhost:5000/api/movies", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
@@ -26,13 +29,14 @@ function MovieList({ onAddToWatchlist }) {
         setMovies([...movies, newMovie]);
         setShowAddForm(false);
         setFormData({ title: "", genre: "", year: "" });
+        setAddMessage("Movie added successfully!");
+        setTimeout(() => setAddMessage(""), 2500);
       });
-      console.log(formData)
   };
 
   // Edit Movie
   const handleEditMovie = (id, updatedData) => {
-    fetch(`http://localhost:5000/api/movies/${id}`, {
+  fetch(`http://localhost:5000/api/movies/${id}`, {
       method: "PATCH", // or "PUT" if your backend uses PUT
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedData),
@@ -48,13 +52,47 @@ function MovieList({ onAddToWatchlist }) {
 
   // Delete Movie
   const handleDeleteMovie = (id) => {
-    fetch(`http://localhost:5000/api/movies/${id}`, { method: "DELETE" })
+  fetch(`http://localhost:5000/api/movies/${id}`, { method: "DELETE" })
       .then(() => setMovies(movies.filter((m) => m.id !== id)));
   };
 
+  // Filter and search movies
+  const filteredMovies = movies.filter(m => {
+    const matchesSearch = m.title.toLowerCase().includes(search.toLowerCase());
+    const matchesGenre = genreFilter ? m.genre === genreFilter : true;
+    return matchesSearch && matchesGenre;
+  });
+
+  // Get unique genres for filter dropdown
+  const genres = Array.from(new Set(movies.map(m => m.genre))).filter(Boolean);
+
   return (
     <div style={styles.container}>
+      {addMessage && (
+        <div style={{color: '#43a047', background: '#e8f5e9', padding: '10px', borderRadius: '8px', marginBottom: '12px', fontWeight: 'bold'}}>
+          {addMessage}
+        </div>
+      )}
       <h2 style={styles.heading}>Movies 🎥</h2>
+      <div style={{ display: "flex", gap: "16px", marginBottom: "18px", alignItems: "center", justifyContent: "center" }}>
+        <input
+          type="text"
+          placeholder="Search movies..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          style={{ padding: "8px 12px", borderRadius: "6px", border: "1px solid #6a82fb", fontSize: "1rem", outline: "none", minWidth: "180px" }}
+        />
+        <select
+          value={genreFilter}
+          onChange={e => setGenreFilter(e.target.value)}
+          style={{ padding: "8px 12px", borderRadius: "6px", border: "1px solid #fc5c7d", fontSize: "1rem", outline: "none", minWidth: "140px", background: "#fff", color: "#fc5c7d", fontWeight: "bold" }}
+        >
+          <option value="">All Genres</option>
+          {genres.map(g => (
+            <option key={g} value={g}>{g}</option>
+          ))}
+        </select>
+      </div>
       <button style={styles.addBtn} onClick={() => setShowAddForm(true)}>
         Add Movie
       </button>
@@ -62,13 +100,13 @@ function MovieList({ onAddToWatchlist }) {
         <div style={styles.form}>
           <input
             name="title"
-            placeholder="Title"
+            placeholder="Title"a
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
           />
           <input
             name="genre"
-            placeholder="genre"
+            placeholder="Genre"
             value={formData.genre}
             onChange={(e) => setFormData({ ...formData, genre: e.target.value })}
           />
@@ -83,13 +121,15 @@ function MovieList({ onAddToWatchlist }) {
         </div>
       )}
       <div style={styles.grid}>
-        {movies.map((movie) => (
+        {filteredMovies.map((movie) => (
           <MovieCard
             key={movie.id}
             id={movie.id}
             title={movie.title}
             genre={movie.genre}
             year={movie.year}
+            poster={movie.poster}
+            average_rating={movie.average_rating}
             onAddToWatchlist={() => onAddToWatchlist(movie)}
             onEdit={() => {
               setFormData({ title: movie.title, genre: movie.genre, year: movie.year });

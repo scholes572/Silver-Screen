@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function MovieCard({ id, title, genre, year, onEdit, onDelete, onAddToWatchlist }) {
+function MovieCard({ id, title, genre, year, onEdit, onDelete, onAddToWatchlist, poster }) {
   const [showEditForm, setShowEditForm] = useState(false);
   const [formData, setFormData] = useState({
     title,
@@ -42,6 +42,9 @@ function MovieCard({ id, title, genre, year, onEdit, onDelete, onAddToWatchlist 
         </div>
       )}
       <div style={styles.card}>
+        {poster && (
+          <img src={poster} alt={title + " poster"} style={{width: '120px', height: '180px', objectFit: 'cover', borderRadius: '12px', marginBottom: '10px', boxShadow: '0 2px 8px #6a82fb22'}} />
+        )}
         <h3>{title}</h3>
         <p>{genre}</p>
         <p>{year}</p>

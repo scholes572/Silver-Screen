@@ -31,12 +31,13 @@ def add_movie():
     data = request.get_json()
     title = data.get("title")
     genre = data.get("genre")
-    year = data.get("year")  # matches your model field
+    year = data.get("year")
+    poster = data.get("poster")
 
     if not title or not genre or not year:
         return jsonify({"error": "All fields are required"}), 400
 
-    new_movie = Movie(title=title, genre=genre, year=year)
+    new_movie = Movie(title=title, genre=genre, year=year, poster=poster)
     db.session.add(new_movie)
     db.session.commit()
     return movie_schema.jsonify(new_movie), 201
@@ -55,12 +56,13 @@ def delete_movie(id):
 def update_movie(id):
     movie = Movie.query.get(id)
     if not movie:
-        return jsonify({"error": "<Movie not found"}), 404
+        return jsonify({"error": "Movie not found"}), 404
 
     data = request.get_json()
-    movie.title = data.get("rating", movie.title)
-    movie.genre = data.get("rating", movie.genre)
-    movie.year = data.get("text", movie.year)
+    movie.title = data.get("title", movie.title)
+    movie.genre = data.get("genre", movie.genre)
+    movie.year = data.get("year", movie.year)
+    movie.poster = data.get("poster", movie.poster)
 
     db.session.commit()
     return movie_schema.jsonify(movie), 200

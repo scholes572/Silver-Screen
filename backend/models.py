@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask import Flask
 
 
 db = SQLAlchemy()
@@ -30,6 +31,14 @@ class Movie(db.Model):
     title = db.Column(db.String(120), nullable=False)
     genre = db.Column(db.String(50))
     year = db.Column(db.Integer)
+    poster = db.Column(db.String(255))  # URL to poster image
+
+    # Calculated field for average rating (not stored, but can be queried)
+    @property
+    def average_rating(self):
+        if not self.reviews or len(self.reviews) == 0:
+            return None
+        return round(sum([r.rating for r in self.reviews]) / len(self.reviews), 1)
 
     # Relationships
     reviews = db.relationship("Review", back_populates="movie", cascade="all, delete-orphan")
@@ -48,6 +57,7 @@ class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     rating = db.Column(db.Integer, nullable=False)  # 1–5
     text = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     movie_id = db.Column(db.Integer, db.ForeignKey("movies.id"), nullable=False)

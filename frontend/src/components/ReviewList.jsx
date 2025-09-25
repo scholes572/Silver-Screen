@@ -3,11 +3,13 @@ import React, { useState, useEffect } from "react";
 function ReviewList() {
   const [reviews, setReviews] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [formData, setFormData] = useState({ author: "", content: "" });
+  const [formData, setFormData] = useState({ rating: 5, text: "", user_id: 1, movie_id: 1 });
+  const [editId, setEditId] = useState(null);
+  const [editData, setEditData] = useState({ rating: 5, text: "" });
 
   // Fetch reviews
   useEffect(() => {
-    fetch("http://localhost:5000/api/reviews")
+  fetch("http://localhost:5000/api/reviews")
       .then((res) => res.json())
       .then((data) => setReviews(data))
       .catch((err) => console.error("Error fetching reviews:", err));
@@ -15,6 +17,7 @@ function ReviewList() {
 
   // Add Review
   const handleAddReview = () => {
+    // You may want to set user_id and movie_id here if available
     fetch("http://localhost:5000/api/reviews", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -24,29 +27,35 @@ function ReviewList() {
       .then((newReview) => {
         setReviews([...reviews, newReview]);
         setShowAddForm(false);
-        setFormData({ author: "", content: "" });
+        setFormData({ rating: 5, text: "" });
       });
   };
 
   // Edit Review
-  const handleEditReview = (id, updatedData) => {
+  const handleEditReview = (id) => {
     fetch(`http://localhost:5000/api/reviews/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedData),
+      body: JSON.stringify(editData),
     })
       .then((res) => res.json())
       .then((updatedReview) => {
         setReviews((reviews) =>
           reviews.map((r) => (r.id === id ? updatedReview : r))
         );
+        setEditId(null);
+        setEditData({ rating: 5, text: "" });
       })
       .catch((err) => console.error("Error editing review:", err));
   };
 
   // Delete Review
   const handleDeleteReview = (id) => {
-    fetch(`http://localhost:5000/api/reviews/${id}`, { method: "DELETE" })
+  if (!id) {
+    console.error("Cannot delete review: invalid id", id);
+    return;
+  }
+  fetch(`http://localhost:5000/api/reviews/${id}`, { method: "DELETE" })
       .then(() => setReviews(reviews.filter((r) => r.id !== id)));
   };
 
@@ -58,22 +67,39 @@ function ReviewList() {
       </button>
       {showAddForm && (
         <div style={styles.form}>
+          <label style={{fontWeight:'bold'}}>User ID:</label>
           <input
-            name="author"
-            placeholder="Your Name"
-            value={formData.author}
-            onChange={(e) =>
-              setFormData({ ...formData, author: e.target.value })
-            }
+            type="number"
+            name="user_id"
+            min={1}
+            value={formData.user_id}
+            onChange={e => setFormData({ ...formData, user_id: Number(e.target.value) })}
+            style={styles.input}
+          />
+          <label style={{fontWeight:'bold'}}>Movie ID:</label>
+          <input
+            type="number"
+            name="movie_id"
+            min={1}
+            value={formData.movie_id}
+            onChange={e => setFormData({ ...formData, movie_id: Number(e.target.value) })}
+            style={styles.input}
+          />
+          <label style={{fontWeight:'bold'}}>Rating:</label>
+          <input
+            type="number"
+            name="rating"
+            min={1}
+            max={5}
+            value={formData.rating}
+            onChange={e => setFormData({ ...formData, rating: Number(e.target.value) })}
             style={styles.input}
           />
           <textarea
-            name="content"
+            name="text"
             placeholder="Write your review..."
-            value={formData.content}
-            onChange={(e) =>
-              setFormData({ ...formData, content: e.target.value })
-            }
+            value={formData.text}
+            onChange={e => setFormData({ ...formData, text: e.target.value })}
             style={styles.textarea}
           />
           <div style={styles.formActions}>
@@ -97,24 +123,47 @@ function ReviewList() {
         ) : (
           reviews.map((review, idx) => (
             <div key={review.id || idx} style={styles.card}>
-              <div style={styles.avatar}>
-                {review.author ? review.author.charAt(0).toUpperCase() : "U"}
-              </div>
-              <div style={styles.author}>{review.author || "Unknown"}</div>
-              <div style={styles.content}>{review.content}</div>
+              <div style={styles.avatar}>{review.rating ? review.rating : "?"}</div>
+              <div style={styles.author}>Rating: {review.rating || "?"} / 5</div>
+              <div style={styles.content}>{review.text}</div>
               <div style={styles.actions}>
-                <button
-                  style={styles.editBtn}
-                  onClick={() => handleEditReview(review.id, formData)}
-                >
-                  Edit
-                </button>
-                <button
-                  style={styles.deleteBtn}
-                  onClick={() => handleDeleteReview(review.id)}
-                >
-                  Delete
-                </button>
+                {editId === review.id ? (
+                  <>
+                    <input
+                      type="number"
+                      min={1}
+                      max={5}
+                      value={editData.rating}
+                      onChange={e => setEditData({ ...editData, rating: Number(e.target.value) })}
+                      style={styles.input}
+                    />
+                    <textarea
+                      value={editData.text}
+                      onChange={e => setEditData({ ...editData, text: e.target.value })}
+                      style={styles.textarea}
+                    />
+                    <button style={styles.saveBtn} onClick={() => handleEditReview(review.id)}>Save</button>
+                    <button style={styles.cancelBtn} onClick={() => setEditId(null)}>Cancel</button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      style={styles.editBtn}
+                      onClick={() => {
+                        setEditId(review.id);
+                        setEditData({ rating: review.rating, text: review.text });
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      style={styles.deleteBtn}
+                      onClick={() => handleDeleteReview(review.id)}
+                    >
+                      Delete
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           ))

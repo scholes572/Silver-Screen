@@ -5,22 +5,29 @@ const styles = {
     margin: "48px auto",
     maxWidth: "900px",
     padding: "40px 32px",
-    background: "rgba(255,255,255,0.96)",
+    background: "linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%)",
     borderRadius: "24px",
     boxShadow: "0 8px 32px rgba(252,92,125,0.12), 0 2px 8px rgba(106,130,251,0.08)",
-    textAlign: "center"
+    textAlign: "center",
+    border: "2px solid #fc5c7d"
   },
   heading: {
     color: "#fc5c7d",
     fontWeight: "bold",
-    fontSize: "2rem",
+    fontSize: "2.2rem",
     marginBottom: "24px",
-    letterSpacing: "1px"
+    letterSpacing: "1px",
+    textShadow: "0 2px 8px #fc5c7d22"
   },
   text: {
     color: "#6a82fb",
-    fontSize: "1.15rem",
-    fontWeight: "500"
+    fontSize: "1.18rem",
+    fontWeight: "500",
+    margin: "12px 0",
+    padding: "10px 18px",
+    background: "#f3f6fd",
+    borderRadius: "8px",
+    boxShadow: "0 1px 4px #6a82fb22"
   }
 };
 
