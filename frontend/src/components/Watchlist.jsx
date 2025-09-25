@@ -24,11 +24,19 @@ const styles = {
   }
 };
 
-function Watchlist() {
+function Watchlist({ watchlist }) {
   return (
     <div style={styles.container}>
       <h2 style={styles.heading}>Your Watchlist</h2>
-      <p style={styles.text}>Movies you want to watch will appear here.</p>
+      {watchlist && watchlist.length > 0 ? (
+        watchlist.map((movie, idx) => (
+          <div key={idx} style={styles.text}>
+            <strong>{movie.title}</strong> ({movie.year}) - {movie.genre}
+          </div>
+        ))
+      ) : (
+        <p style={styles.text}>Movies you want to watch will appear here.</p>
+      )}
     </div>
   );
 }

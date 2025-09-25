@@ -51,6 +51,21 @@ def delete_movie(id):
     return jsonify({"message": "Movie deleted"}), 200
 
 
+@api_bp.route("/movies/<int:id>", methods=["PATCH"])
+def update_movie(id):
+    movie = Movie.query.get(id)
+    if not movie:
+        return jsonify({"error": "<Movie not found"}), 404
+
+    data = request.get_json()
+    movie.title = data.get("rating", movie.title)
+    movie.genre = data.get("rating", movie.genre)
+    movie.year = data.get("text", movie.year)
+
+    db.session.commit()
+    return movie_schema.jsonify(movie), 200
+
+
 # ---------------- REVIEWS ----------------
 @api_bp.route("/reviews", methods=["GET"])
 def get_reviews():

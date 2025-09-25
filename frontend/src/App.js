@@ -88,10 +88,19 @@ const Home = () => (
 );
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    return localStorage.getItem("isLoggedIn") === "true";
+  });
+
+  const [watchlist, setWatchlist] = useState([]);
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+    localStorage.setItem("isLoggedIn", "true");
+  };
 
   if (!isLoggedIn) {
-    return <LoginPage onLogin={() => setIsLoggedIn(true)} />;
+    return <LoginPage onLogin={handleLogin} />;
   }
 
   return (
@@ -100,8 +109,8 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/movies" element={<MovieList />} />
-          <Route path="/watchlist" element={<Watchlist />} />
+          <Route path="/movies" element={<MovieList onAddToWatchlist={movie => setWatchlist(prev => [...prev, movie])} />} />
+          <Route path="/watchlist" element={<Watchlist watchlist={watchlist} />} />
           <Route path="/reviews" element={<ReviewList />} />
         </Routes>
       </div>
