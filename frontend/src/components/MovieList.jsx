@@ -9,7 +9,7 @@ function MovieList({ onAddToWatchlist }) {
   const [search, setSearch] = useState("");
   const [genreFilter, setGenreFilter] = useState("");
 
-  // Fetch movies
+  
   useEffect(() => {
   fetch("http://localhost:5000/api/movies")
       .then((res) => res.json())
@@ -17,7 +17,7 @@ function MovieList({ onAddToWatchlist }) {
       .catch((err) => console.error("Error fetching movies:", err));
   }, []);
 
-  // Add Movie
+  
   const handleAddMovie = () => {
   fetch("http://localhost:5000/api/movies", {
       method: "POST",
@@ -34,10 +34,10 @@ function MovieList({ onAddToWatchlist }) {
       });
   };
 
-  // Edit Movie
+  
   const handleEditMovie = (id, updatedData) => {
   fetch(`http://localhost:5000/api/movies/${id}`, {
-      method: "PATCH", // or "PUT" if your backend uses PUT
+      method: "PATCH", 
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedData),
     })
@@ -50,20 +50,20 @@ function MovieList({ onAddToWatchlist }) {
       .catch(err => console.error("Error editing movie:", err));
   };
 
-  // Delete Movie
+  
   const handleDeleteMovie = (id) => {
   fetch(`http://localhost:5000/api/movies/${id}`, { method: "DELETE" })
       .then(() => setMovies(movies.filter((m) => m.id !== id)));
   };
 
-  // Filter and search movies
+  
   const filteredMovies = movies.filter(m => {
     const matchesSearch = m.title.toLowerCase().includes(search.toLowerCase());
     const matchesGenre = genreFilter ? m.genre === genreFilter : true;
     return matchesSearch && matchesGenre;
   });
 
-  // Get unique genres for filter dropdown
+  
   const genres = Array.from(new Set(movies.map(m => m.genre))).filter(Boolean);
 
   return (

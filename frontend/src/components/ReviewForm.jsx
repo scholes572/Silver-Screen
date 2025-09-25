@@ -10,14 +10,14 @@ function ReviewForm({ onAddReview }) {
     if (!author || !content) return;
 
     const newReview = {
-      id: Date.now(), // temporary unique ID
+      id: Date.now(), 
       author,
       content,
     };
 
     onAddReview(newReview);
 
-    // reset form
+    
     setAuthor("");
     setContent("");
   }

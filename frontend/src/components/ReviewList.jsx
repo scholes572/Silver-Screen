@@ -7,7 +7,7 @@ function ReviewList() {
   const [editId, setEditId] = useState(null);
   const [editData, setEditData] = useState({ rating: 5, text: "" });
 
-  // Fetch reviews
+  
   useEffect(() => {
   fetch("http://localhost:5000/api/reviews")
       .then((res) => res.json())
@@ -15,9 +15,9 @@ function ReviewList() {
       .catch((err) => console.error("Error fetching reviews:", err));
   }, []);
 
-  // Add Review
+  
   const handleAddReview = () => {
-    // You may want to set user_id and movie_id here if available
+    
     fetch("http://localhost:5000/api/reviews", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -31,7 +31,7 @@ function ReviewList() {
       });
   };
 
-  // Edit Review
+  
   const handleEditReview = (id) => {
     fetch(`http://localhost:5000/api/reviews/${id}`, {
       method: "PATCH",
@@ -49,7 +49,7 @@ function ReviewList() {
       .catch((err) => console.error("Error editing review:", err));
   };
 
-  // Delete Review
+  
   const handleDeleteReview = (id) => {
   if (!id) {
     console.error("Cannot delete review: invalid id", id);

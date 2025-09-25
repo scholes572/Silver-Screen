@@ -5,22 +5,22 @@ from backend.schemas import (
     movie_schema, movies_schema,
     review_schema, reviews_schema,
     watchlist_schema, watchlists_schema
-)  # ✅ fixed import
+)  
 
 api_bp = Blueprint("api", __name__)
 
-# Root route for friendly landing page
+
 @api_bp.route("/", methods=["GET"])
 def root():
     return jsonify({"message": "Welcome to the Silver Screen API!"}), 200
 
-# Health check
+
 @api_bp.route("/ping", methods=["GET"])
 def ping():
     return jsonify({"message": "pong"}), 200
 
 
-# ---------------- MOVIES ----------------
+
 @api_bp.route("/movies", methods=["GET"])
 def get_movies():
     movies = Movie.query.all()
@@ -68,7 +68,7 @@ def update_movie(id):
     return movie_schema.jsonify(movie), 200
 
 
-# ---------------- REVIEWS ----------------
+
 @api_bp.route("/reviews", methods=["GET"])
 def get_reviews():
     reviews = Review.query.all()
@@ -80,7 +80,7 @@ def add_review():
     user_id = data.get("user_id")
     movie_id = data.get("movie_id")
     rating = data.get("rating")
-    text = data.get("text")  # matches your model field
+    text = data.get("text")  
 
     if not rating or not (1 <= int(rating) <= 5):
         return jsonify({"error": "Rating must be between 1 and 5"}), 400
@@ -113,7 +113,7 @@ def delete_review(id):
     return jsonify({"message": "Review deleted"}), 200
 
 
-# ---------------- WATCHLIST ----------------
+
 @api_bp.route("/watchlist", methods=["GET"])
 def get_watchlist():
     watchlist = Watchlist.query.all()
